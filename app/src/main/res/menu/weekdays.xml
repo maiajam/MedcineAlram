@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="all">
+        <item android:id ="@+id/sun"
+            android:title="@string/sun"/>
+        <item android:id ="@+id/Mon"
+            android:title="@string/Mon"/>
+        <item android:id ="@+id/Tus"
+            android:title="@string/Tus"/>
+        <item android:id ="@+id/Wed"
+            android:title="@string/wed"/>
+        <item android:id ="@+id/Thu"
+            android:title="@string/Thu"/>
+        <item android:id ="@+id/fri"
+            android:title="@string/fri"/>
+        <item android:id ="@+id/Sat"
+            android:title="@string/Sat"/>
+
+
+
+    </group>
+
+</menu>
