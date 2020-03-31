@@ -5,15 +5,15 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="MedcineName">Medcine Name</string>
-    <string name="MedcineDesc">Medcine Description</string>
-    <string name="MedcineNote">not about this Medcine</string>
-    <string name="RemAt">Reminde Time</string>
+    <string name="MedcineName">Name</string>
+    <string name="MedcineDesc">Medicine Description</string>
+    <string name="MedcineNote">Medicine Note</string>
+    <string name="RemAt">Reminder Time</string>
     <string name="schedule">Schedule</string>
 
-    <string name="startFrom">Starting from</string>
+    <string name="startFrom">Starting Date</string>
     <string name="done">Done</string>
-    <string name="startAT">Start hour</string>
+    <string name="startAT">Starting hour</string>
     <string name="ENTerData">please enter all the data about the medcne</string>
     <string name="doneAdded">your medcine has been added succesfully</string>
 
@@ -162,8 +162,16 @@
     <string name="english">Engilsh</string>
     <string name="action_delete">delete</string>
     <string name="action_edit">edit</string>
-    <string name="doneUpdate">your Medcine Updated succesfully</string>
+    <string name="doneUpdate">your Medicine Updated succesfully</string>
     <string name="oneTime">once a day</string>
     <string name="twice">twice a day</string>
     <string name="three">three times a days</string>
+    <string name="Toast_delete">The Medicine has been deleted successfully</string>
+    <string name="label_medcineInfo">Medicine Info</string>
+    <string name="label_medcineDose">Dose</string>
+    <string name="label_SecmedcineDose">Second Dose</string>
+    <string name="label_thirdDose">Third Dose</string>
+    <string name="Toast_enternote">plaese .. Enter Note about this medicine</string>
+    <string name="label_TV_WelcomeEmptyList">You Dont Have Any Medicine Yet</string>
+    <string name="label_TV_WelcomeEmptyList2">Start Adding</string>
 </resources>

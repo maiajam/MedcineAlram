@@ -1,27 +1,20 @@
 package com.example.maiajam.medcinealram;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+
+import com.example.maiajam.medcinealram.util.prefrenceSetting;
 
 import java.util.Locale;
-
-import static android.content.Context.AUDIO_SERVICE;
 
 /**
  * Created by maiAjam on 9/12/2017.

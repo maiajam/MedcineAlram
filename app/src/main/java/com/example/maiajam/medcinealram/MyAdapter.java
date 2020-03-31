@@ -11,6 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.maiajam.medcinealram.data.model.Medcine;
+import com.example.maiajam.medcinealram.data.sql.Mysql;
+import com.example.maiajam.medcinealram.ui.AddMedcine;
 
 import java.util.List;
 
@@ -37,7 +42,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recrow,parent,false);
-
         Holder vH = new Holder(view);
         return vH ;
     }
@@ -71,10 +75,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
                             case R.id.action_delet:
                                 db = new Mysql(context);
                                 db.delete(medid);
+                                db.close();
+                                ListMed.remove(holder.getAdapterPosition());
+                                notifyItemRemoved(holder.getAdapterPosition());
+                                Toast.makeText(context, context.getString(R.string.Toast_delete), Toast.LENGTH_LONG).show();
                                 break;
 
                             case R.id.action_edit:
-                                Intent i = new Intent(context,AddMedcine.class);
+                                Intent i = new Intent(context, AddMedcine.class);
                                 i.putExtra("med_id",medid);
                                 context.startActivity(i);
                                 break;

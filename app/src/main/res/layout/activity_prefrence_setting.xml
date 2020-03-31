@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.maiajam.medcinealram.prefrenceSetting">
+    tools:context="com.example.maiajam.medcinealram.util.prefrenceSetting">
 
     <FrameLayout
         android:layout_width="match_parent"

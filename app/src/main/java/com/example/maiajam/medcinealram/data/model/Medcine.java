@@ -1,4 +1,4 @@
-package com.example.maiajam.medcinealram;
+package com.example.maiajam.medcinealram.data.model;
 
 import java.util.Date;
 

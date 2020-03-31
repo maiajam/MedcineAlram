@@ -1,16 +1,17 @@
-package com.example.maiajam.medcinealram;
+package com.example.maiajam.medcinealram.util;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.AudioManager;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+
+import com.example.maiajam.medcinealram.FragmentPrefrence;
+import com.example.maiajam.medcinealram.R;
 
 import java.util.Locale;
 

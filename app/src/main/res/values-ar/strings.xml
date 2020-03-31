@@ -162,4 +162,8 @@
     <string name="oneTime">once a day</string>
     <string name="twice">twice a day</string>
     <string name="three">three times a days</string>
+    <string name="label_medcineInfo">Medcine Info</string>
+    <string name="label_medcineDose">Dose</string>
+    <string name="label_SecmedcineDose">Seconde Dose</string>
+    <string name="label_thirdDose">Third Dose</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.maiajam.medcinealram;
+package com.example.maiajam.medcinealram.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
+
+import com.example.maiajam.medcinealram.R;
 
 /**
  * Created by maiAjam on 9/10/2017.

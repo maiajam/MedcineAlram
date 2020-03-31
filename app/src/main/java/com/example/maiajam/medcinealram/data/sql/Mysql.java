@@ -1,4 +1,4 @@
-package com.example.maiajam.medcinealram;
+package com.example.maiajam.medcinealram.data.sql;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.example.maiajam.medcinealram.data.model.Medcine;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -137,6 +139,12 @@ public class Mysql extends SQLiteOpenHelper {
 
     public void delete(int medid) {
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        String addQuery = "DELETE from MedInfo  WHERE id == '" + medid + "' ;";
+
+        Log.d(TAG, "DeleteMedcine: " + addQuery);
+        db.execSQL(addQuery);
+        db.close();
     }
 
     public void UpdateMed(Medcine medcine) {

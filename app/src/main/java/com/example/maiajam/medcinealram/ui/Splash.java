@@ -1,8 +1,10 @@
-package com.example.maiajam.medcinealram;
+package com.example.maiajam.medcinealram.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.maiajam.medcinealram.R;
 
 import static java.lang.Thread.sleep;
 
@@ -20,7 +22,7 @@ public class Splash extends AppCompatActivity {
                 try {
                     sleep(2*1000);
 
-                    Intent i = new Intent(Splash.this,MainActivity.class);
+                    Intent i = new Intent(Splash.this, MainActivity.class);
 
 
                     startActivity(i);
