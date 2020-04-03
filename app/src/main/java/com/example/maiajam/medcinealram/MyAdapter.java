@@ -84,6 +84,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
                             case R.id.action_edit:
                                 Intent i = new Intent(context, AddMedcine.class);
                                 i.putExtra("med_id",medid);
+                                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(i);
                                 break;
                         }

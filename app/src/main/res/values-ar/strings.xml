@@ -11,8 +11,8 @@
     <string name="RemAt">وقت التذكير</string>
     <string name="schedule">Schedule</string>
 
-    <string name="startFrom">Starting from</string>
-    <string name="done">Done</string>
+    <string name="startFrom">البدء بتاريخ</string>
+    <string name="done">تم</string>
     <string name="startAT">Start hour</string>
     <string name="ENTerData">الرجاء ادخال جميع بيانات الدواء</string>
     <string name="doneAdded">تم إضافة الدواء بنجاح</string>
@@ -44,7 +44,8 @@
         <item>كل ثلاث ساعات</item>
 
     </string-array>
-    <string name="title_activity_add__medcine">ADD_Medcine</string>
+    <string name="title_activity_add__medcine">أضف دواء</string>
+    <string name="title_main">دوائي</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -135,35 +136,35 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="days">Days</string>
-    <string name="everyDay">Every day</string>
+    <string name="everyDay">كل يوم</string>
     <string name="daysWeek">Specific Days of week</string>
     <string name="MedcineMember">This Medcine For</string>
-    <string name="take">Take</string>
+    <string name="take">الجرعة</string>
     <string name="appdesc">This app for helping you to remine your medicne</string>
-    <string name="Mymedcine">My Medcine</string>
-    <string name="MyFamily">My Family</string>
-    <string name="homepage">Home</string>
-    <string name="setting">Setting</string>
-    <string name="share">Share</string>
-    <string name="notification">Notification setting</string>
-    <string name="vibrate">vibrate</string>
-    <string name="light">Light</string>
-    <string name="secondAla">Second Alarm</string>
-    <string name="ThAla">Third alarm</string>
-    <string name="sun">Sunday</string>
-    <string name="Mon">Monday</string>
-    <string name="Tus">Tuseday</string>
-    <string name="wed">Wensday</string>
-    <string name="Thu">Thursday</string>
-    <string name="fri">Friday</string>
-    <string name="Sat">Saterday</string>
-    <string name="meDose">Medcine Dose</string>
-    <string name="doneUpdate">your Medcine Updated succesfully</string>
-    <string name="oneTime">once a day</string>
-    <string name="twice">twice a day</string>
-    <string name="three">three times a days</string>
-    <string name="label_medcineInfo">Medcine Info</string>
-    <string name="label_medcineDose">Dose</string>
-    <string name="label_SecmedcineDose">Seconde Dose</string>
-    <string name="label_thirdDose">Third Dose</string>
+    <string name="Mymedcine">دوائي</string>
+    <string name="MyFamily">عائلتي</string>
+    <string name="homepage">الرئيسية</string>
+    <string name="setting">إعدادات</string>
+    <string name="share">مشاركة</string>
+    <string name="notification">إعدادات التنبيهات </string>
+    <string name="vibrate">رجاج</string>
+    <string name="light">الاضاءة</string>
+    <string name="secondAla">موعد التنبيه الثاني</string>
+    <string name="ThAla">موعد التذكير الثالث</string>
+    <string name="sun">الاحد</string>
+    <string name="Mon">الاثنين</string>
+    <string name="Tus">الثلاثاء</string>
+    <string name="wed">الاربعاء</string>
+    <string name="Thu">الخميس</string>
+    <string name="fri">الجمعة</string>
+    <string name="Sat">السبت</string>
+    <string name="meDose">جرعة الدواء</string>
+    <string name="doneUpdate">تم تحديث معلومات دواؤك بنجاح</string>
+    <string name="oneTime">مرة في اليوم</string>
+    <string name="twice">مرتان في اليوم</string>
+    <string name="three">ثلاث مرات في اليوم</string>
+    <string name="label_medcineInfo">معلومات الدواء</string>
+    <string name="label_medcineDose">جرعة الدواء</string>
+    <string name="label_SecmedcineDose">الجرعة الثانية</string>
+    <string name="label_thirdDose">الجرعة الثالثة</string>
 </resources>

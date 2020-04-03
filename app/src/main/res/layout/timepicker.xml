@@ -25,4 +25,32 @@
         android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         android:id ="@+id/Dose"></NumberPicker>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TimePicker_B_Add"
+            android:layout_gravity="center"
+            android:background="@color/whiteColor"
+            android:textColor="@color/colorAccent"
+            android:layout_marginEnd="10dp"
+            android:text="@string/label_AddTimeandDose"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/whiteColor"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/TimePicker_B_Cancel"
+            android:text="@string/label_Cancel"/>
+        </LinearLayout>
+
+
 </LinearLayout>

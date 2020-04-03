@@ -91,6 +91,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_add__medcine));
 
         extra = getIntent().getExtras();
         if (extra != null) {
@@ -174,9 +175,9 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
         }
 
-        FirstAlarma.setOnClickListener(new View.OnClickListener() {
+        FirstAlarma.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
                 Bundle T = new Bundle();
                 T.putString("AlarmNo", "FirstAlarm");
@@ -184,8 +185,10 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 DialogFragment timeDialoge = new TimeDoseDialge();
                 timeDialoge.setArguments(T);
                 timeDialoge.show(getFragmentManager(), "");
+                return false;
             }
         });
+
 
 
         SecondAlarm.setOnClickListener(new View.OnClickListener() {
@@ -401,7 +404,6 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             Med_Note = MedNote.getText().toString();
             First_Alarm = FirstAlarma.getText().toString();
             start_Date = startDate.getText().toString();
-            Dose = Integer.parseInt(Med_FDose.getText().toString());
 
 
             if (TextUtils.isEmpty(Med_Note)) {
@@ -412,6 +414,13 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 Toast.makeText(getBaseContext(), getString(R.string.Toast_enternote), Toast.LENGTH_LONG).show();
                 return false;
             }
+            if(TextUtils.isEmpty(Med_FDose.getText().toString()))
+            {
+                Toast.makeText(getBaseContext(), getString(R.string.Toast_enternote), Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            Dose = Integer.parseInt(Med_FDose.getText().toString());
 
             if (med_Id == 0) {
                 Date startdate = null;
@@ -728,7 +737,6 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
     public void DoseSet(int Dose, int notime) {
 
         if (notime == 1) {
-
             Med_FDose.setText(String.valueOf(Dose));
         } else if (notime == 2) {
             Med_SDose.setText(String.valueOf(Dose));

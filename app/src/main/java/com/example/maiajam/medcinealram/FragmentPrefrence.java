@@ -45,7 +45,7 @@ public class FragmentPrefrence extends PreferenceFragment {
 
                     String value = (String)newValue ;
 
-                    if(value == "العربية")
+                    if(value.equalsIgnoreCase("العربية") )
                     {
                         locale = new Locale("ar");
                         Resources resources = getResources();
@@ -57,7 +57,7 @@ public class FragmentPrefrence extends PreferenceFragment {
                         startActivity(i);
 
                     } else {
-                        if (value == "Engilsh") {
+                        if (value.equalsIgnoreCase("English")) {
 
                             locale = new Locale("en");
                             Resources resources = getResources();

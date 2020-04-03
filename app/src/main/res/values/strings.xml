@@ -25,7 +25,7 @@
 
 
     <string-array name="lang">
-        <item>Engilsh</item>
+        <item>English</item>
         <item>العربية</item>
     </string-array>
 
@@ -44,7 +44,8 @@
         <item>Every 3 hours</item>
 
     </string-array>
-    <string name="title_activity_add__medcine">ADD_Medcine</string>
+    <string name="title_activity_add__medcine">Add Medicine</string>
+    <string name="title_main">My Medicine</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -174,4 +175,6 @@
     <string name="Toast_enternote">plaese .. Enter Note about this medicine</string>
     <string name="label_TV_WelcomeEmptyList">You Dont Have Any Medicine Yet</string>
     <string name="label_TV_WelcomeEmptyList2">Start Adding</string>
+    <string name="label_AddTimeandDose">Add</string>
+    <string name="label_Cancel">Cancel</string>
 </resources>
