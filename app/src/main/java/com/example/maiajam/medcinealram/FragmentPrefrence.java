@@ -4,17 +4,25 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 
+import com.example.maiajam.medcinealram.helper.Global;
+import com.example.maiajam.medcinealram.helper.HelperMethodes;
 import com.example.maiajam.medcinealram.util.prefrenceSetting;
 
 import java.util.Locale;
+
+import static com.example.maiajam.medcinealram.helper.Global.English;
+import static com.example.maiajam.medcinealram.helper.Global.arabic;
+import static com.example.maiajam.medcinealram.helper.HelperMethodes.setSelectedLanguage;
 
 /**
  * Created by maiAjam on 9/12/2017.
@@ -37,6 +45,7 @@ public class FragmentPrefrence extends PreferenceFragment {
         listPreference =(ListPreference)getPreferenceManager().findPreference("lang");
 
         listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
@@ -47,24 +56,15 @@ public class FragmentPrefrence extends PreferenceFragment {
 
                     if(value.equalsIgnoreCase("العربية") )
                     {
-                        locale = new Locale("ar");
-                        Resources resources = getResources();
-                        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-                        Configuration con = resources.getConfiguration();
-                        con.locale = locale;
-                        resources.updateConfiguration(con, displayMetrics);
+                        setSelectedLanguage(getContext(), arabic);
+                       HelperMethodes.setAppLanguage(getContext(),arabic);
                         Intent i = new Intent(getActivity(), prefrenceSetting.class);
                         startActivity(i);
 
                     } else {
                         if (value.equalsIgnoreCase("English")) {
-
-                            locale = new Locale("en");
-                            Resources resources = getResources();
-                            DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-                            Configuration con = resources.getConfiguration();
-                            con.locale = locale;
-                            resources.updateConfiguration(con, displayMetrics);
+                            setSelectedLanguage(getContext(),English);
+                            HelperMethodes.setAppLanguage(getContext(),English);
                             Intent i = new Intent(getActivity(), prefrenceSetting.class);
                             startActivity(i);
 
