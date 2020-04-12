@@ -1,8 +1,6 @@
 package com.example.maiajam.medcinealram;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,11 +8,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.util.DisplayMetrics;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
-import com.example.maiajam.medcinealram.helper.Global;
 import com.example.maiajam.medcinealram.helper.HelperMethodes;
 import com.example.maiajam.medcinealram.util.prefrenceSetting;
 

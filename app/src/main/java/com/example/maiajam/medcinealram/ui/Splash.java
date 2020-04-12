@@ -1,12 +1,10 @@
 package com.example.maiajam.medcinealram.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.maiajam.medcinealram.R;
-import com.example.maiajam.medcinealram.helper.Global;
-import com.example.maiajam.medcinealram.helper.HelperMethodes;
 
 import static com.example.maiajam.medcinealram.helper.Global.English;
 import static com.example.maiajam.medcinealram.helper.Global.arabic;

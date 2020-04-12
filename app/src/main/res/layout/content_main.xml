@@ -33,7 +33,7 @@
         android:visibility="gone"
         android:text="@string/label_TV_WelcomeEmptyList2" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RcView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

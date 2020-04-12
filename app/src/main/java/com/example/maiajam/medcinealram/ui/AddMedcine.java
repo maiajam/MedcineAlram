@@ -1,18 +1,14 @@
 package com.example.maiajam.medcinealram.ui;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Build;
-import android.support.annotation.IdRes;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.IdRes;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -28,18 +24,23 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.work.BackoffPolicy;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.maiajam.medcinealram.data.model.Medcine;
 import com.example.maiajam.medcinealram.data.sql.Mysql;
 import com.example.maiajam.medcinealram.R;
-import com.example.maiajam.medcinealram.util.reciver;
+import com.example.maiajam.medcinealram.util.NotifyMeWorker;
 
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.AlarmDose_value {
@@ -82,6 +83,8 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
     };
 
     Bundle extra = new Bundle();
+    private OneTimeWorkRequest scheduleReq;
+    private Data medcineNote;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -382,8 +385,6 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-
         getMenuInflater().inflate(R.menu.addmedmenu, menu);
         return true;
 
@@ -491,12 +492,10 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         c_startDate.setTime(start_date);
         c_firstAlarm.setTime(first_alarm);
 
-        AlarmManager alarM = (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
-        Intent i = new Intent(getBaseContext(), reciver.class);
-        i.putExtra("med_not", med_note);
-        i.putExtra("med_mame", med_name);
-        i.putExtra("med_dose", med_dose);
-
+        medcineNote = new Data.Builder().putString("med_not", med_note)
+                .putString("med_mame", med_name)
+                .putString("med_dose", String.valueOf(med_dose))
+                .build();
 
         if (everDayCheck) {
             cEverDay.clear();
@@ -514,16 +513,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C1.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C1.set(Calendar.DAY_OF_WEEK, 1);
 
-            PendingIntent opertation = PendingIntent.getBroadcast(getBaseContext(), 1, i, 0);
-
-            if (noTime == 1) {
-                alarM.setRepeating(AlarmManager.RTC_WAKEUP, C1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, opertation);
-            } else if (noTime == 2) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C1.getTimeInMillis(), 12 * 60 * 60 * 1000, opertation);
-            } else if (noTime == 3) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C1.getTimeInMillis(), 8 * 60 * 60 * 1000, opertation);
-            }
-
+            setRepeatedAlarm(C1,noTime);
 
         } else if (monCheck) {
             C2.clear();
@@ -534,17 +524,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C2.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C2.set(Calendar.DAY_OF_WEEK, 2);
 
-
-            PendingIntent opertation = PendingIntent.getBroadcast(getBaseContext(), 1, i, 0);
-
-            if (noTime == 1) {
-                alarM.setRepeating(AlarmManager.RTC_WAKEUP, C2.getTimeInMillis(), AlarmManager.INTERVAL_DAY, opertation);
-            } else if (noTime == 2) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C2.getTimeInMillis(), 12 * 60 * 60 * 1000, opertation);
-            } else if (noTime == 3) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C2.getTimeInMillis(), 8 * 60 * 60 * 1000, opertation);
-            }
-
+            setRepeatedAlarm(C2,noTime);
 
         } else if (TusCheck) {
             C3.clear();
@@ -555,17 +535,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C3.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C3.set(Calendar.DAY_OF_WEEK, 3);
 
-
-            PendingIntent opertation = PendingIntent.getBroadcast(getBaseContext(), 1, i, 0);
-
-            if (noTime == 1) {
-                alarM.setRepeating(AlarmManager.RTC_WAKEUP, C3.getTimeInMillis(), AlarmManager.INTERVAL_DAY, opertation);
-            } else if (noTime == 2) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C3.getTimeInMillis(), 12 * 60 * 60 * 1000, opertation);
-            } else if (noTime == 3) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C3.getTimeInMillis(), 8 * 60 * 60 * 1000, opertation);
-            }
-
+          setRepeatedAlarm(C3,noTime);
 
         } else if (wenCheck) {
             C4.clear();
@@ -575,17 +545,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C4.set(Calendar.HOUR, c_startDate.get(Calendar.HOUR));
             C4.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C4.set(Calendar.DAY_OF_WEEK, 4);
-
-
-            PendingIntent opertation = PendingIntent.getBroadcast(getBaseContext(), 1, i, 0);
-
-            if (noTime == 1) {
-                alarM.setRepeating(AlarmManager.RTC_WAKEUP, C4.getTimeInMillis(), AlarmManager.INTERVAL_DAY, opertation);
-            } else if (noTime == 2) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C4.getTimeInMillis(), 12 * 60 * 60 * 1000, opertation);
-            } else if (noTime == 3) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C4.getTimeInMillis(), 8 * 60 * 60 * 1000, opertation);
-            }
+          setRepeatedAlarm(C4,noTime);
 
         } else if (ThrChec) {
             C5.clear();
@@ -596,17 +556,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C5.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C5.set(Calendar.DAY_OF_WEEK, 5);
 
-
-            PendingIntent opertation = PendingIntent.getBroadcast(getBaseContext(), 1, i, 0);
-
-            if (noTime == 1) {
-                alarM.setRepeating(AlarmManager.RTC_WAKEUP, C5.getTimeInMillis(), AlarmManager.INTERVAL_DAY, opertation);
-            } else if (noTime == 2) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C5.getTimeInMillis(), 12 * 60 * 60 * 1000, opertation);
-            } else if (noTime == 3) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C5.getTimeInMillis(), 8 * 60 * 60 * 1000, opertation);
-            }
-
+            setRepeatedAlarm(C5,noTime);
         } else if (FriCheck) {
             C6.clear();
             C6.set(Calendar.YEAR, c_startDate.get(Calendar.YEAR));
@@ -616,17 +566,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C6.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C6.set(Calendar.DAY_OF_WEEK, 6);
 
-
-            PendingIntent opertation = PendingIntent.getBroadcast(getBaseContext(), 1, i, 0);
-
-            if (noTime == 1) {
-                alarM.setRepeating(AlarmManager.RTC_WAKEUP, C6.getTimeInMillis(), AlarmManager.INTERVAL_DAY, opertation);
-            } else if (noTime == 2) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C6.getTimeInMillis(), 12 * 60 * 60 * 1000, opertation);
-            } else if (noTime == 3) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C6.getTimeInMillis(), 8 * 60 * 60 * 1000, opertation);
-            }
-
+            setRepeatedAlarm(C6,noTime);
         } else if (satCheck) {
 
             C7.clear();
@@ -637,38 +577,61 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C7.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C7.set(Calendar.DAY_OF_WEEK, 7);
 
-
-            PendingIntent opertation = PendingIntent.getBroadcast(getBaseContext(), 1, i, 0);
-
-            if (noTime == 1) {
-                alarM.setRepeating(AlarmManager.RTC_WAKEUP, C7.getTimeInMillis(), AlarmManager.INTERVAL_DAY, opertation);
-            } else if (noTime == 2) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C7.getTimeInMillis(), 12 * 60 * 60 * 1000, opertation);
-            } else if (noTime == 3) {
-                alarM.setInexactRepeating(AlarmManager.RTC_WAKEUP, C7.getTimeInMillis(), 8 * 60 * 60 * 1000, opertation);
-            }
-
+            setRepeatedAlarm(C7,noTime);
         }
 
 
     }
 
+    private void setRepeatedAlarm(Calendar time, int noRepeatedTime) {
+        if (noRepeatedTime == 1) {
+            schuldeAlaram((int) time.getTimeInMillis(), noRepeatedTime);
+        } else if (noRepeatedTime == 2) {
+            schuldeAlaram((int) time.getTimeInMillis(),noRepeatedTime);
+        } else if (noRepeatedTime == 3) {
+            schuldeAlaram((int) time.getTimeInMillis(),noRepeatedTime);
+        }
+
+    }
+
+    private void schuldeAlaram(int IntilaDelay, int noTime) {
+        switch (noTime)
+        {
+            case 1 :// no repeating
+                scheduleReq = new OneTimeWorkRequest.Builder(NotifyMeWorker.class)
+                        .setInitialDelay(IntilaDelay, TimeUnit.MILLISECONDS)
+                        .setInputData(medcineNote)
+                        .build();
+                break;
+            case 2 :// repeat twice
+                scheduleReq = new OneTimeWorkRequest.Builder(NotifyMeWorker.class)
+                        .setInitialDelay(IntilaDelay, TimeUnit.MILLISECONDS)
+                        .setInputData(medcineNote)
+                        .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 12 * 60 * 60 * 1000,TimeUnit.MILLISECONDS)
+                        .build();
+            break;
+            case 3://repeat 3 times
+                scheduleReq = new OneTimeWorkRequest.Builder(NotifyMeWorker.class)
+                        .setInitialDelay(IntilaDelay, TimeUnit.MILLISECONDS)
+                        .setInputData(medcineNote)
+                        .setBackoffCriteria(BackoffPolicy.EXPONENTIAL,  8 * 60 * 60 * 1000,TimeUnit.MILLISECONDS)
+                        .build();
+                break;
+        }
+        WorkManager.getInstance().enqueue(scheduleReq);
+    }
 
     private void AddMed(String med_name, String med_note, String FirstAlarm, int dose, Date Startddate, int noTime) {
-
-
         Medcine NewMed = new Medcine(med_name, med_note, FirstAlarm, Startddate, noTime, dose);
         Mysql MY_db = new Mysql(getBaseContext());
 
         MY_db.AddMedcine(NewMed);
         MY_db.close();
 
-
     }
 
     @Override
     public void AlarmSet(int hour, int min, int am, int noTime) {
-
 
         if (noTime == 1) {
             c.set(Calendar.HOUR, hour);

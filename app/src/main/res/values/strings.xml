@@ -177,4 +177,6 @@
     <string name="label_TV_WelcomeEmptyList2">Start Adding</string>
     <string name="label_AddTimeandDose">Add</string>
     <string name="label_Cancel">Cancel</string>
+    <string name="channel_name">name</string>
+    <string name="channel_description">desc</string>
 </resources>
