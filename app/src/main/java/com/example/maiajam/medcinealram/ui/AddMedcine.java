@@ -178,17 +178,15 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
         }
 
-        FirstAlarma.setOnTouchListener(new View.OnTouchListener() {
+        FirstAlarma.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
+            public void onClick(View v) {
                 Bundle T = new Bundle();
                 T.putString("AlarmNo", "FirstAlarm");
                 T.putInt("noTime", NoTime);
                 DialogFragment timeDialoge = new TimeDoseDialge();
                 timeDialoge.setArguments(T);
                 timeDialoge.show(getFragmentManager(), "");
-                return false;
             }
         });
 

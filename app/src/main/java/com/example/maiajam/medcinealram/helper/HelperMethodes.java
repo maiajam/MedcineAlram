@@ -87,4 +87,25 @@ public class HelperMethodes {
         notificationManager.notify((int) System.currentTimeMillis(), notification);
 
     }
+
+    public static void setLayoutDirction(Context context, String locale) {
+
+        Configuration config;
+        config = new Configuration(context.getResources().getConfiguration());
+
+        switch (locale) {
+            case "ar":
+                config.locale = new Locale("ar");
+                config.setLayoutDirection(new Locale("ar"));
+                break;
+            case "en":
+                config.locale = new Locale("en");
+                config.setLayoutDirection(new Locale("en"));
+                break;
+        }
+
+        context.getResources().updateConfiguration(config,context.getResources().getDisplayMetrics());
+
+        
+    }
 }

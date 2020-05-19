@@ -29,38 +29,6 @@ public class TimeDoseDialge extends DialogFragment implements View.OnClickListen
     NumberPicker DosePicker;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onClick(View v) {
-        if (v == AddB) {
-            getSelectedTime();
-            getSelectedDose();
-            value.AlarmSet(Hour, min, a, noTime);
-            value.DoseSet(dose, noTime);
-            dismiss();
-        } else if (v == cancelB) {
-            dismiss();
-        }
-
-    }
-
-    private void getSelectedDose() {
-        dose = DosePicker.getValue();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void getSelectedTime() {
-        noTime = getArguments().getInt("noTime", 1);
-        Hour = timePicker.getHour();
-        min = timePicker.getMinute();
-        int a;
-        if (Hour > 12) {
-            a = 2;
-        } else {
-            a = 1;
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -96,14 +64,45 @@ public class TimeDoseDialge extends DialogFragment implements View.OnClickListen
             throw new ClassCastException(context.toString()
                     + " must implement NoticeDialogListener");
         }
-
-
     }
 
     @Override
     public void dismiss() {
         super.dismiss();
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onClick(View v) {
+        if (v == AddB) {
+            getSelectedTime();
+            getSelectedDose();
+            value.AlarmSet(Hour, min, a, noTime);
+            value.DoseSet(dose, noTime);
+            dismiss();
+        } else if (v == cancelB) {
+            dismiss();
+        }
+
+    }
+
+    private void getSelectedDose() {
+        dose = DosePicker.getValue();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void getSelectedTime() {
+        noTime = getArguments().getInt("noTime", 1);
+        min = timePicker.getMinute();
+        Hour = timePicker.getHour();
+        int a;
+        if (Hour > 12) {
+            a = 2;
+        } else {
+            a = 1;
+        }
+    }
+
+
 
     public interface AlarmDose_value {
         //if a = 1 --- am if a = 2 ---- pm

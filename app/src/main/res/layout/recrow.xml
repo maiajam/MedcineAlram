@@ -15,8 +15,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:paddingLeft="20dp"
-      >
+        android:paddingLeft="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,9 +29,10 @@
 
                 <TextView
                     android:id="@+id/med_name"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:paddingTop="15dp"
                     android:text="dfd"
                     android:textColor="@color/colorPrimaryDark"
@@ -70,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp" android:visibility="gone">
+                android:paddingBottom="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/RemAt"
