@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">وقت الدواء</string>
+    <string name="app_name">دوائي</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,11 +9,11 @@
     <string name="MedcineDesc">وصف الدواء</string>
     <string name="MedcineNote">ملاحظة عن هذا الدواء</string>
     <string name="RemAt">وقت التذكير</string>
-    <string name="schedule">Schedule</string>
+    <string name="schedule">جدولة</string>
 
     <string name="startFrom">البدء بتاريخ</string>
     <string name="done">تم</string>
-    <string name="startAT">Start hour</string>
+    <string name="startAT">البدء بساعة</string>
     <string name="ENTerData">الرجاء ادخال جميع بيانات الدواء</string>
     <string name="doneAdded">تم إضافة الدواء بنجاح</string>
 
@@ -44,7 +44,7 @@
         <item>كل ثلاث ساعات</item>
 
     </string-array>
-    <string name="title_activity_add__medcine">أضف دواء</string>
+    <string name="title_activity_add__medcine">دوائي</string>
     <string name="title_main">دوائي</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

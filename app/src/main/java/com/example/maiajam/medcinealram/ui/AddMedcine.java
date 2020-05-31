@@ -78,7 +78,6 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
             startDate.setText(sf.format(c.getTime()).toString());
 
-
         }
     };
 
@@ -123,10 +122,9 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
         if (med_Id == 0) {
             FirstAlarma.setText(new SimpleDateFormat("hh:mm a").format(Calendar.getInstance().getTime()));
-
             SecondAlarm.setText(new SimpleDateFormat("hh:mm a").format(getSecondeAlaram(NoTime)));
             ThirdAlarm.setText(new SimpleDateFormat("hh:mm a").format(getThirdAlaram()));
-            startDate.setText(new SimpleDateFormat("mm/dd/yy").format(Calendar.getInstance().getTime()).toString());
+            startDate.setText(new SimpleDateFormat("M/dd/yyyy").format(Calendar.getInstance().getTime()).toString());
 
           /*  Med_FDose.setText("1");
             Med_ThDose.setText("2");

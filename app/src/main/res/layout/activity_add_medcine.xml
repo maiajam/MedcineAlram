@@ -34,6 +34,7 @@
                     android:layout_marginRight="10dp"
                     android:text="@string/label_medcineInfo"
                     android:textSize="20sp"
+                    android:textColor="@color/colorAccent"
                     android:textStyle="bold" />
 
                 <EditText
@@ -43,7 +44,9 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
-                    android:hint="@string/MedcineName" />
+                    android:hint="@string/MedcineName"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent"/>
 
                 <EditText
                     android:id="@+id/ed_medNote"
@@ -53,6 +56,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent"
                     android:hint="@string/MedcineNote" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -78,6 +83,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:text="@string/RemAt"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -88,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
+                    android:backgroundTint="@color/colorAccent"
                     android:entries="@array/day_time" />
 
                 <LinearLayout
@@ -197,13 +205,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/startFrom"
                     android:textSize="20sp"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:textStyle="bold" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -211,8 +223,9 @@
                         android:id="@+id/startPiker_Time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:layout_weight="3"
+                        android:textColor="@color/colorAccent"
+                        android:textColorHint="@color/colorAccent"
                         android:clickable="true"
                         android:textSize="10sp" />
 
@@ -224,6 +237,9 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
+                        android:visibility="gone"
+                        android:textColor="@color/colorAccent"
+                        android:textColorHint="@color/colorAccent"
                         android:src="@drawable/ic_dropdown" />
 
                 </LinearLayout>
@@ -234,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <RadioButton
                         android:id="@+id/ch_everyDay"

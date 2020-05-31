@@ -46,11 +46,12 @@ public class HelperMethodes {
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         Configuration con = resources.getConfiguration();
         con.locale = locale;
+        con.setLayoutDirection(locale);
         resources.updateConfiguration(con, displayMetrics);
+
     }
 
     public static void notifyMyAboutTheMedcine(Context context,String med_name,String med_note,String med_Dose) {
-
 
         String chanelId = "10";
 
@@ -106,6 +107,6 @@ public class HelperMethodes {
 
         context.getResources().updateConfiguration(config,context.getResources().getDisplayMetrics());
 
-        
+
     }
 }
