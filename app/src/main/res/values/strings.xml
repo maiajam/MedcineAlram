@@ -159,7 +159,7 @@
     <string name="fri">Friday</string>
     <string name="Sat">Saterday</string>
     <string name="meDose">Medcine Dose</string>
-    <string name="dialy">daily</string>
+    <string name="dialy"> My Daily</string>
     <string name="english">English</string>
     <string name="action_delete">delete</string>
     <string name="action_edit">edit</string>
@@ -173,6 +173,8 @@
     <string name="label_SecmedcineDose">Second Dose</string>
     <string name="label_thirdDose">Third Dose</string>
     <string name="Toast_enternote">plaese .. Enter Note about this medicine</string>
+    <string name="Toast_enterDose">plaese .. Enter The Dose For this Medicine</string>
+    <string name="Toast_enterName">plaese .. Enter The Name For this Medicine</string>
     <string name="label_TV_WelcomeEmptyList">You Dont Have Any Medicine Yet</string>
     <string name="label_TV_WelcomeEmptyList2">Start Adding</string>
     <string name="label_AddTimeandDose">Add</string>

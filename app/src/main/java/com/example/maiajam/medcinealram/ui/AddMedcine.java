@@ -281,6 +281,10 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                     SecondAlarm.setVisibility(View.VISIBLE);
                     Med_SDose.setVisibility(View.VISIBLE);
 
+                    Calendar cal = Calendar.getInstance(); // creates calendar
+                    cal.setTime(new Date(FirstAlarma.getText().toString())); // sets calendar time/date
+                    cal.add(Calendar.HOUR_OF_DAY, 12); // adds one hour
+                    SecondAlarm.setText(cal.getTime().toString());
 
                     ThirdAlarm.setVisibility(View.GONE);
                     Med_ThDose.setVisibility(View.GONE);
@@ -291,6 +295,16 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                     SecondAlarm.setVisibility(View.VISIBLE);
                     Med_SDose.setVisibility(View.VISIBLE);
 
+
+                    Calendar cal = Calendar.getInstance(); // creates calendar
+                    cal.setTime(new Date(FirstAlarma.getText().toString())); // sets calendar time/date
+                    cal.add(Calendar.HOUR_OF_DAY, 8); // adds one hour
+                    SecondAlarm.setText(cal.getTime().toString());
+
+                    Calendar cal3 = Calendar.getInstance(); // creates calendar
+                    cal3.setTime(new Date(FirstAlarma.getText().toString())); // sets calendar time/date
+                    cal3.add(Calendar.HOUR_OF_DAY, 16); // adds one hour
+                    ThirdAlarm.setText(cal3.getTime().toString());
                     ThirdAlarm.setVisibility(View.VISIBLE);
                     Med_ThDose.setVisibility(View.VISIBLE);
                 }
@@ -308,57 +322,73 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         days.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-
                 switch (checkedId) {
                     case R.id.ch_everyDay:
-
+                        everDayCheck = true;
+                            break;
                     case R.id.ch_daysWeek:
-
-                        PopupMenu popupMenu = new PopupMenu(getBaseContext(), ch_specificDay);
-                        MenuInflater inflater = popupMenu.getMenuInflater();
-                        inflater.inflate(R.menu.weekdays, popupMenu.getMenu());
-
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-
-
-                                switch (item.getItemId()) {
-                                    case R.id.sun:
-                                        sunCheck = true;
-                                        return true;
-                                    case R.id.Mon:
-                                        monCheck = true;
-                                        return true;
-                                    case R.id.Tus:
-                                        TusCheck = true;
-                                        return true;
-                                    case R.id.Thu:
-                                        ThrChec = true;
-                                        return true;
-                                    case R.id.Wed:
-                                        wenCheck = true;
-                                        return true;
-                                    case R.id.Sat:
-                                        satCheck = true;
-                                        return true;
-                                    case R.id.fri:
-                                        FriCheck = true;
-                                        return true;
-                                    default:
-                                        return false;
-
-
-                                }
-                            }
-                        });
-                        popupMenu.show();
+                        everDayCheck = false;
+                            openPopUpForDaysOfWeek();
+                        break;
+                    default:
+                        break;
                 }
-
-
             }
         });
 
+
+    }
+
+    private void openPopUpForDaysOfWeek() {
+        final PopupMenu popupMenu = new PopupMenu(getBaseContext(), ch_specificDay);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.weekdays, popupMenu.getMenu());
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case R.id.sun:
+                        sunCheck = true;
+                        popupMenu.show();
+                        return false ;
+                    case R.id.Mon:
+                        monCheck = true;
+                        popupMenu.show();
+                        return false ;
+                    case R.id.Tus:
+                        TusCheck = true;
+                        popupMenu.show();
+                        return false ;
+                    case R.id.Thu:
+                        ThrChec = true;
+                        popupMenu.show();
+                        return false ;
+
+                    case R.id.Wed:
+                        wenCheck = true;
+                        popupMenu.show();
+                        return false ;
+
+                    case R.id.Sat:
+                        satCheck = true;
+                        popupMenu.show();
+                        return false ;
+
+                    case R.id.fri:
+                        FriCheck = true;
+                        popupMenu.show();
+                        return false ;
+
+                    default:
+                        popupMenu.show();
+                        return false ;
+
+                }
+
+            }
+        });
 
     }
 
@@ -404,7 +434,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
 
             if (TextUtils.isEmpty(Med_Note)) {
-                Toast.makeText(getBaseContext(), getString(R.string.Toast_enternote), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), getString(R.string.Toast_enterName), Toast.LENGTH_LONG).show();
                 return false;
             }
             if (TextUtils.isEmpty(Med_name)) {
@@ -413,7 +443,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             }
             if(TextUtils.isEmpty(Med_FDose.getText().toString()))
             {
-                Toast.makeText(getBaseContext(), getString(R.string.Toast_enternote), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), getString(R.string.Toast_enterDose), Toast.LENGTH_LONG).show();
                 return false;
             }
 
@@ -422,7 +452,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             if (med_Id == 0) {
                 Date startdate = null;
                 try {
-                    startdate = new SimpleDateFormat("mm/dd/yy", Locale.getDefault()).parse(start_Date);
+                    startdate = new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).parse(start_Date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -500,6 +530,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             cEverDay.set(Calendar.DAY_OF_MONTH, c_startDate.get(Calendar.DAY_OF_MONTH));
             cEverDay.set(Calendar.HOUR, c_startDate.get(Calendar.HOUR));
             cEverDay.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
+            setRepeatedAlarm(cEverDay,noTime);
         } else if (sunCheck) {
             C1.clear();
             C1.set(Calendar.YEAR, c_startDate.get(Calendar.YEAR));

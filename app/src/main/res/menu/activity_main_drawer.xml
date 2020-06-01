@@ -6,18 +6,14 @@
             android:id="@+id/nav_Mymedcine"
 
             android:title="@string/Mymedcine" />
-        <item
-            android:id="@+id/nav_homepage"
 
-            android:title="@string/homepage" />
         <item
             android:id="@+id/nav_member"
-
             android:title="@string/dialy" />
 
     </group>
 
-    <item android:title="Other">
+    <item android:title="">
         <menu>
 
             <item

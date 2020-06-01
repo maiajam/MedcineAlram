@@ -143,6 +143,10 @@
     <string name="appdesc">This app for helping you to remine your medicne</string>
     <string name="Mymedcine">دوائي</string>
     <string name="MyFamily">عائلتي</string>
+    <string name="dialy"> يومياتي</string>
+    <string name="english">English</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_edit">تعديل</string>
     <string name="homepage">الرئيسية</string>
     <string name="setting">إعدادات</string>
     <string name="share">مشاركة</string>
