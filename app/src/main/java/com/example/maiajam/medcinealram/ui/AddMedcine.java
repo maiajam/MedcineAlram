@@ -6,9 +6,11 @@ import android.app.DialogFragment;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Build;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -34,13 +36,18 @@ import androidx.work.WorkManager;
 import com.example.maiajam.medcinealram.data.model.Medcine;
 import com.example.maiajam.medcinealram.data.sql.Mysql;
 import com.example.maiajam.medcinealram.R;
+import com.example.maiajam.medcinealram.helper.Global;
 import com.example.maiajam.medcinealram.util.NotifyMeWorker;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import static com.example.maiajam.medcinealram.helper.Global.Once_Aday;
+import static com.example.maiajam.medcinealram.helper.Global.Twice_Aday;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.AlarmDose_value {
@@ -84,6 +91,8 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
     Bundle extra = new Bundle();
     private OneTimeWorkRequest scheduleReq;
     private Data medcineNote;
+    private Calendar cal;
+    private Calendar calThirdAlarm;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -100,24 +109,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             med_Id = extra.getInt("med_id", 0);
         }
 
-
-        MedName = (EditText) findViewById(R.id.ed_medName);
-        MedNote = (EditText) findViewById(R.id.ed_medNote);
-        FirstAlarma = (EditText) findViewById(R.id.ed_FirstAlarm);
-        SecondAlarm = (EditText) findViewById(R.id.ed_secondAlarm);
-        ThirdAlarm = (EditText) findViewById(R.id.ed_thirdAlarm);
-
-        ch_everyday = (RadioButton) findViewById(R.id.ch_everyDay);
-        ch_specificDay = (RadioButton) findViewById(R.id.ch_daysWeek);
-        days = (RadioGroup) findViewById(R.id.Days);
-
-        startDate = (EditText) findViewById(R.id.startPiker_Time);
-
-        Med_SDose = (EditText) findViewById(R.id.ed_SecondDose);
-        Med_FDose = (EditText) findViewById(R.id.ed_Dose);
-        Med_ThDose = (EditText) findViewById(R.id.ed_ThirdDose);
-
-        Sp_DayTime = (Spinner) findViewById(R.id.Sp_DayTime);
+        initialViews();
         db = new Mysql(getBaseContext());
 
         if (med_Id == 0) {
@@ -187,7 +179,6 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 timeDialoge.show(getFragmentManager(), "");
             }
         });
-
 
 
         SecondAlarm.setOnClickListener(new View.OnClickListener() {
@@ -266,51 +257,25 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 String item = parent.getItemAtPosition(position).toString();
 
                 if (item.equals("Once a day")) {
-
-                    NoTime = 1;
-                    SecondAlarm.setVisibility(View.GONE);
-                    Med_SDose.setVisibility(View.GONE);
-
-
-                    ThirdAlarm.setVisibility(View.GONE);
-                    Med_ThDose.setVisibility(View.GONE);
+                    NoTime = 1 ;
+                    alarmsVisibility(Once_Aday);
 
                 } else if (item.equals("Twice a day")) {
-
                     NoTime = 2;
-                    SecondAlarm.setVisibility(View.VISIBLE);
-                    Med_SDose.setVisibility(View.VISIBLE);
-
-                    Calendar cal = Calendar.getInstance(); // creates calendar
-                    cal.setTime(new Date(FirstAlarma.getText().toString())); // sets calendar time/date
-                    cal.add(Calendar.HOUR_OF_DAY, 12); // adds one hour
-                    SecondAlarm.setText(cal.getTime().toString());
-
-                    ThirdAlarm.setVisibility(View.GONE);
-                    Med_ThDose.setVisibility(View.GONE);
-
+                    alarmsVisibility(Twice_Aday);
+                    calculateOtherAlarm(Twice_Aday, getFirstSelectedAlarm());
+                    SecondAlarm.setText(new SimpleDateFormat("hh:mm a").format(cal.getTime().toString()));
 
                 } else if (item.equals("3 times a day")) {
                     NoTime = 3;
-                    SecondAlarm.setVisibility(View.VISIBLE);
-                    Med_SDose.setVisibility(View.VISIBLE);
-
-
-                    Calendar cal = Calendar.getInstance(); // creates calendar
-                    cal.setTime(new Date(FirstAlarma.getText().toString())); // sets calendar time/date
-                    cal.add(Calendar.HOUR_OF_DAY, 8); // adds one hour
+                    alarmsVisibility(3);
+                    calculateOtherAlarm(NoTime, getFirstSelectedAlarm());
                     SecondAlarm.setText(cal.getTime().toString());
+                    ThirdAlarm.setText(calThirdAlarm.getTime().toString());
 
-                    Calendar cal3 = Calendar.getInstance(); // creates calendar
-                    cal3.setTime(new Date(FirstAlarma.getText().toString())); // sets calendar time/date
-                    cal3.add(Calendar.HOUR_OF_DAY, 16); // adds one hour
-                    ThirdAlarm.setText(cal3.getTime().toString());
-                    ThirdAlarm.setVisibility(View.VISIBLE);
-                    Med_ThDose.setVisibility(View.VISIBLE);
                 }
 
             }
-
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -325,10 +290,10 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 switch (checkedId) {
                     case R.id.ch_everyDay:
                         everDayCheck = true;
-                            break;
+                        break;
                     case R.id.ch_daysWeek:
                         everDayCheck = false;
-                            openPopUpForDaysOfWeek();
+                        openPopUpForDaysOfWeek();
                         break;
                     default:
                         break;
@@ -337,6 +302,71 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         });
 
 
+    }
+
+    private void alarmsVisibility(int noTime) {
+
+        SecondAlarm.setVisibility(View.VISIBLE);
+        Med_SDose.setVisibility(View.VISIBLE);
+        if (noTime == Twice_Aday) {
+            ThirdAlarm.setVisibility(View.GONE);
+            Med_ThDose.setVisibility(View.GONE);
+        } else if (noTime == Global.Three_Times) {
+            ThirdAlarm.setVisibility(View.VISIBLE);
+            Med_ThDose.setVisibility(View.VISIBLE);
+        }else {
+            ThirdAlarm.setVisibility(View.GONE);
+            Med_ThDose.setVisibility(View.GONE);
+            SecondAlarm.setVisibility(View.GONE);
+            Med_SDose.setVisibility(View.GONE);
+        }
+    }
+
+    private void calculateOtherAlarm(int noTime, Date firstSelectedAlarm) {
+
+        cal = Calendar.getInstance() ;
+        cal.setTime(getFirstSelectedAlarm());
+        if (noTime == Twice_Aday) {
+            cal.add(Calendar.HOUR_OF_DAY, 12); // add 12 hour
+        } else if (noTime == Global.Three_Times) {
+            calThirdAlarm = Calendar.getInstance();
+            cal.add(Calendar.HOUR_OF_DAY, 8); // add 12 hour
+            calThirdAlarm.add(Calendar.HOUR_OF_DAY,16);
+        }
+
+    }
+
+    private Date getFirstSelectedAlarm() {
+        Date datefirstAlarm = new Date();
+        try {
+            datefirstAlarm = new java.text.SimpleDateFormat().parse(FirstAlarma.getText().toString())
+            ;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return  datefirstAlarm;
+    }
+
+    private void initialViews() {
+
+        MedName = (EditText) findViewById(R.id.ed_medName);
+        MedNote = (EditText) findViewById(R.id.ed_medNote);
+        FirstAlarma = (EditText) findViewById(R.id.ed_FirstAlarm);
+        SecondAlarm = (EditText) findViewById(R.id.ed_secondAlarm);
+        ThirdAlarm = (EditText) findViewById(R.id.ed_thirdAlarm);
+
+        ch_everyday = (RadioButton) findViewById(R.id.ch_everyDay);
+        ch_specificDay = (RadioButton) findViewById(R.id.ch_daysWeek);
+        days = (RadioGroup) findViewById(R.id.Days);
+
+        startDate = (EditText) findViewById(R.id.startPiker_Time);
+
+        Med_SDose = (EditText) findViewById(R.id.ed_SecondDose);
+        Med_FDose = (EditText) findViewById(R.id.ed_Dose);
+        Med_ThDose = (EditText) findViewById(R.id.ed_ThirdDose);
+
+        Sp_DayTime = (Spinner) findViewById(R.id.Sp_DayTime);
     }
 
     private void openPopUpForDaysOfWeek() {
@@ -352,38 +382,38 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                     case R.id.sun:
                         sunCheck = true;
                         popupMenu.show();
-                        return false ;
+                        return false;
                     case R.id.Mon:
                         monCheck = true;
                         popupMenu.show();
-                        return false ;
+                        return false;
                     case R.id.Tus:
                         TusCheck = true;
                         popupMenu.show();
-                        return false ;
+                        return false;
                     case R.id.Thu:
                         ThrChec = true;
                         popupMenu.show();
-                        return false ;
+                        return false;
 
                     case R.id.Wed:
                         wenCheck = true;
                         popupMenu.show();
-                        return false ;
+                        return false;
 
                     case R.id.Sat:
                         satCheck = true;
                         popupMenu.show();
-                        return false ;
+                        return false;
 
                     case R.id.fri:
                         FriCheck = true;
                         popupMenu.show();
-                        return false ;
+                        return false;
 
                     default:
                         popupMenu.show();
-                        return false ;
+                        return false;
 
                 }
 
@@ -441,8 +471,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 Toast.makeText(getBaseContext(), getString(R.string.Toast_enternote), Toast.LENGTH_LONG).show();
                 return false;
             }
-            if(TextUtils.isEmpty(Med_FDose.getText().toString()))
-            {
+            if (TextUtils.isEmpty(Med_FDose.getText().toString())) {
                 Toast.makeText(getBaseContext(), getString(R.string.Toast_enterDose), Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -489,7 +518,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             }
             finish();
         }
-            return true;
+        return true;
 
     }
 
@@ -530,7 +559,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             cEverDay.set(Calendar.DAY_OF_MONTH, c_startDate.get(Calendar.DAY_OF_MONTH));
             cEverDay.set(Calendar.HOUR, c_startDate.get(Calendar.HOUR));
             cEverDay.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
-            setRepeatedAlarm(cEverDay,noTime);
+            setRepeatedAlarm(cEverDay, noTime);
         } else if (sunCheck) {
             C1.clear();
             C1.set(Calendar.YEAR, c_startDate.get(Calendar.YEAR));
@@ -540,7 +569,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C1.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C1.set(Calendar.DAY_OF_WEEK, 1);
 
-            setRepeatedAlarm(C1,noTime);
+            setRepeatedAlarm(C1, noTime);
 
         } else if (monCheck) {
             C2.clear();
@@ -551,7 +580,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C2.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C2.set(Calendar.DAY_OF_WEEK, 2);
 
-            setRepeatedAlarm(C2,noTime);
+            setRepeatedAlarm(C2, noTime);
 
         } else if (TusCheck) {
             C3.clear();
@@ -562,7 +591,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C3.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C3.set(Calendar.DAY_OF_WEEK, 3);
 
-          setRepeatedAlarm(C3,noTime);
+            setRepeatedAlarm(C3, noTime);
 
         } else if (wenCheck) {
             C4.clear();
@@ -572,7 +601,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C4.set(Calendar.HOUR, c_startDate.get(Calendar.HOUR));
             C4.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C4.set(Calendar.DAY_OF_WEEK, 4);
-          setRepeatedAlarm(C4,noTime);
+            setRepeatedAlarm(C4, noTime);
 
         } else if (ThrChec) {
             C5.clear();
@@ -583,7 +612,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C5.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C5.set(Calendar.DAY_OF_WEEK, 5);
 
-            setRepeatedAlarm(C5,noTime);
+            setRepeatedAlarm(C5, noTime);
         } else if (FriCheck) {
             C6.clear();
             C6.set(Calendar.YEAR, c_startDate.get(Calendar.YEAR));
@@ -593,7 +622,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C6.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C6.set(Calendar.DAY_OF_WEEK, 6);
 
-            setRepeatedAlarm(C6,noTime);
+            setRepeatedAlarm(C6, noTime);
         } else if (satCheck) {
 
             C7.clear();
@@ -604,7 +633,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             C7.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
             C7.set(Calendar.DAY_OF_WEEK, 7);
 
-            setRepeatedAlarm(C7,noTime);
+            setRepeatedAlarm(C7, noTime);
         }
 
 
@@ -614,34 +643,33 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         if (noRepeatedTime == 1) {
             schuldeAlaram((int) time.getTimeInMillis(), noRepeatedTime);
         } else if (noRepeatedTime == 2) {
-            schuldeAlaram((int) time.getTimeInMillis(),noRepeatedTime);
+            schuldeAlaram((int) time.getTimeInMillis(), noRepeatedTime);
         } else if (noRepeatedTime == 3) {
-            schuldeAlaram((int) time.getTimeInMillis(),noRepeatedTime);
+            schuldeAlaram((int) time.getTimeInMillis(), noRepeatedTime);
         }
 
     }
 
     private void schuldeAlaram(int IntilaDelay, int noTime) {
-        switch (noTime)
-        {
-            case 1 :// no repeating
+        switch (noTime) {
+            case 1:// no repeating
                 scheduleReq = new OneTimeWorkRequest.Builder(NotifyMeWorker.class)
                         .setInitialDelay(IntilaDelay, TimeUnit.MILLISECONDS)
                         .setInputData(medcineNote)
                         .build();
                 break;
-            case 2 :// repeat twice
+            case 2:// repeat twice
                 scheduleReq = new OneTimeWorkRequest.Builder(NotifyMeWorker.class)
                         .setInitialDelay(IntilaDelay, TimeUnit.MILLISECONDS)
                         .setInputData(medcineNote)
-                        .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 12 * 60 * 60 * 1000,TimeUnit.MILLISECONDS)
+                        .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 12 * 60 * 60 * 1000, TimeUnit.MILLISECONDS)
                         .build();
-            break;
+                break;
             case 3://repeat 3 times
                 scheduleReq = new OneTimeWorkRequest.Builder(NotifyMeWorker.class)
                         .setInitialDelay(IntilaDelay, TimeUnit.MILLISECONDS)
                         .setInputData(medcineNote)
-                        .setBackoffCriteria(BackoffPolicy.EXPONENTIAL,  8 * 60 * 60 * 1000,TimeUnit.MILLISECONDS)
+                        .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 8 * 60 * 60 * 1000, TimeUnit.MILLISECONDS)
                         .build();
                 break;
         }
