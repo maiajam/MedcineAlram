@@ -31,7 +31,6 @@ public class NotifyMeWorker extends Worker {
                 medcineInfo.getString("med_mame")
                 , medcineInfo.getString("med_not"),
                 medcineInfo.getString("med_dose"));
-
         return Result.retry();
     }
 

@@ -171,4 +171,5 @@
     <string name="label_medcineDose">جرعة الدواء</string>
     <string name="label_SecmedcineDose">الجرعة الثانية</string>
     <string name="label_thirdDose">الجرعة الثالثة</string>
+    <string name="label_rateTheApp">Rate The App</string>
 </resources>
