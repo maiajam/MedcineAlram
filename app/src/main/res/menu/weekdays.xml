@@ -24,8 +24,6 @@
             android:title="@string/Sat"
             android:checkable="true"/>
 
-
-
     </group>
 
 </menu>

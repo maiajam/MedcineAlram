@@ -7,14 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
-import com.example.maiajam.medcinealram.helper.HelperMethodes;
-
 import static com.example.maiajam.medcinealram.helper.HelperMethodes.notifyMyAboutTheMedcine;
 
 public class NotifyMeWorker extends Worker {
 
-    private Data medcineInfo;
+    private Data medicineInfo;
     private Context mContext;
 
     public NotifyMeWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -28,13 +25,13 @@ public class NotifyMeWorker extends Worker {
 
         getMedcineInfo();
         notifyMyAboutTheMedcine(mContext,
-                medcineInfo.getString("med_mame")
-                , medcineInfo.getString("med_not"),
-                medcineInfo.getString("med_dose"));
+                medicineInfo.getString("med_mame")
+                , medicineInfo.getString("med_not"),
+                medicineInfo.getString("med_dose"));
         return Result.retry();
     }
 
     private void getMedcineInfo() {
-        medcineInfo = getInputData();
+        medicineInfo = getInputData();
     }
 }

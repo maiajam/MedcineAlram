@@ -373,52 +373,34 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.weekdays, popupMenu.getMenu());
         popupMenu.show();
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+       popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
                 switch (item.getItemId()) {
                     case R.id.sun:
                         sunCheck = true;
-                        popupMenu.show();
-                        return false;
                     case R.id.Mon:
                         monCheck = true;
-                        popupMenu.show();
-                        return false;
                     case R.id.Tus:
                         TusCheck = true;
-                        popupMenu.show();
-                        return false;
                     case R.id.Thu:
                         TharCheck = true;
-                        popupMenu.show();
-                        return false;
-
                     case R.id.Wed:
                         wenCheck = true;
-                        popupMenu.show();
-                        return false;
-
                     case R.id.Sat:
                         satCheck = true;
-                        popupMenu.show();
-                        return false;
-
                     case R.id.fri:
                         FriCheck = true;
-                        popupMenu.show();
-                        return false;
-
                     default:
-                        popupMenu.show();
                         return false;
 
                 }
 
             }
         });
-
+        popupMenu.show();
     }
 
     private Calendar getSecondeAlaram(int noTime) {
