@@ -63,15 +63,12 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
     String Med_name, Med_Note, First_Alarm, Second_Al, Third_Alarm, start_Date, Med_member, Med_Dose, FAlaramChosen;
     RadioButton ch_everyday, ch_specificDay;
     RadioGroup days;
-
     Mysql db;
     int med_Id = 0;
-    Arrays days_OfWee[];
+    Arrays days_OfWeek[];
     Calendar c = Calendar.getInstance();
     Calendar c2 = Calendar.getInstance();
     Calendar c3 = Calendar.getInstance();
-
-
     DatePickerDialog.OnDateSetListener startFrom = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -93,7 +90,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
     private Calendar cal;
     private Calendar calThirdAlarm;
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,8 +110,8 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
         if (med_Id == 0) {
             FirstAlarma.setText(new SimpleDateFormat("hh:mm a").format(Calendar.getInstance().getTime()));
-            SecondAlarm.setText(new SimpleDateFormat("hh:mm a").format(getSecondeAlaram(NoTime)));
-            ThirdAlarm.setText(new SimpleDateFormat("hh:mm a").format(getThirdAlaram()));
+            SecondAlarm.setText(new SimpleDateFormat("hh:mm a").format(getSecondeAlaram(NoTime).getTime()));
+            ThirdAlarm.setText(new SimpleDateFormat("hh:mm a").format(getThirdAlaram().getTime()));
             startDate.setText(new SimpleDateFormat("M/dd/yyyy").format(Calendar.getInstance().getTime()).toString());
 
           /*  Med_FDose.setText("1");
@@ -125,20 +122,21 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         } else {
             Medcine medcine = new Medcine();
             medcine = db.getMedcine(med_Id);
-            String start = medcine.getStartDate().toString();
+            Date start = medcine.getStartDate();
             int noTime = medcine.getNoTime();
             final String first = medcine.getFirstAlarm().toString();
 
 
             MedName.setText(medcine.getMedcindeName().toString());
             MedNote.setText(medcine.getMedcineDesc().toString());
-            startDate.setText(start);
+            startDate.setText(new SimpleDateFormat("M/dd/yyyy").format(start));
             FirstAlarma.setText(first);
             Med_FDose.setText(String.valueOf(medcine.getMedDose()));
             final int M_dose = medcine.getMedDose();
 
 
             if (noTime == 2) {
+
                 SecondAlarm.setVisibility(View.VISIBLE);
                 Med_SDose.setVisibility(View.VISIBLE);
                 Med_SDose.setText(String.valueOf(medcine.getMedDose()));
@@ -154,13 +152,16 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 ThirdAlarm.setVisibility(View.VISIBLE);
                 Med_ThDose.setText(String.valueOf(medcine.getMedDose()));
                 Calendar cal = Calendar.getInstance(); // creates calendar
-                cal.setTime(new Date(medcine.getFirstAlarm())); // sets calendar time/date
+                try {
+                    cal.setTime(new SimpleDateFormat("hh:mm a").parse(medcine.getFirstAlarm())); // sets calendar time/date
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 cal.add(Calendar.HOUR_OF_DAY, 8); // adds one hour
                 SecondAlarm.setText(cal.getTime().toString());
                 Calendar cal2 = Calendar.getInstance(); // creates calendar
                 cal2.setTime(cal.getTime()); // sets calendar time/date
                 cal2.add(Calendar.HOUR_OF_DAY, 8); // adds one hour
-
                 ThirdAlarm.setText(cal2.getTime().toString());
             }
 
@@ -210,7 +211,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         startDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                new DatePickerDialog(getBaseContext(), startFrom, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                new DatePickerDialog(getParent(), startFrom, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
                 return true;
             }
         });
@@ -255,25 +256,24 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
                 String item = parent.getItemAtPosition(position).toString();
 
-                if (item.equals("Once a day")) {
+                if (item.equals(getString(R.string.oneTime))) {
                     NoTime = 1;
                     alarmsVisibility(Once_Aday);
 
-                } else if (item.equals("Twice a day")) {
+                } else if (item.equals(getString(R.string.twice))) {
                     NoTime = 2;
                     alarmsVisibility(Twice_Aday);
                     calculateOtherAlarm(Twice_Aday, getFirstSelectedAlarm());
-                    SecondAlarm.setText(new SimpleDateFormat("hh:mm a").format(cal.getTime().toString()));
+                    SecondAlarm.setText(formatTime(cal.getTime()));
 
-                } else if (item.equals("3 times a day")) {
+                } else if (item.equals(getString(R.string.three))) {
                     NoTime = 3;
                     alarmsVisibility(3);
                     calculateOtherAlarm(NoTime, getFirstSelectedAlarm());
-                    SecondAlarm.setText(cal.getTime().toString());
-                    ThirdAlarm.setText(calThirdAlarm.getTime().toString());
+                    SecondAlarm.setText(formatTime(cal.getTime()));
+                    ThirdAlarm.setText(formatTime(calThirdAlarm.getTime()));
 
                 }
-
             }
 
             @Override
@@ -301,6 +301,10 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         });
 
 
+    }
+
+    private String formatTime(Date time) {
+        return new SimpleDateFormat("hh:mm a").format(time);
     }
 
     private void alarmsVisibility(int noTime) {

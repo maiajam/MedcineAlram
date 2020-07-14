@@ -22,6 +22,11 @@
             android:title="@string/light"
             android:defaultValue="false"
             />
+
+        <SwitchPreference android:key="sound"
+            android:title="@string/sound"
+            android:defaultValue="false"
+            />
     </PreferenceCategory>
 
 

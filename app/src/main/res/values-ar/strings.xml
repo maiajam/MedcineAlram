@@ -137,7 +137,7 @@
     </string>
     <string name="days">Days</string>
     <string name="everyDay">كل يوم</string>
-    <string name="daysWeek">Specific Days of week</string>
+    <string name="daysWeek">ايام محدد </string>
     <string name="MedcineMember">This Medcine For</string>
     <string name="take">الجرعة</string>
     <string name="appdesc">This app for helping you to remine your medicne</string>
@@ -171,5 +171,6 @@
     <string name="label_medcineDose">جرعة الدواء</string>
     <string name="label_SecmedcineDose">الجرعة الثانية</string>
     <string name="label_thirdDose">الجرعة الثالثة</string>
-    <string name="label_rateTheApp">Rate The App</string>
+    <string name="label_rateTheApp">قيم التطبيق</string>
+    <string name="sound">صوت</string>
 </resources>
