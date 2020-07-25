@@ -27,11 +27,7 @@
         </activity>
 
         <receiver
-            android:name=".util.reciver"
-            android:exported="false" />
-
-        <service
-            android:name=".util.notificationService"
+            android:name=".util.reciver.AlarmReciver"
             android:exported="false" />
 
         <activity

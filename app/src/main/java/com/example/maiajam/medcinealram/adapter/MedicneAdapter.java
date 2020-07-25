@@ -1,4 +1,4 @@
-package com.example.maiajam.medcinealram;
+package com.example.maiajam.medcinealram.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,17 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maiajam.medcinealram.R;
 import com.example.maiajam.medcinealram.data.model.Medcine;
 import com.example.maiajam.medcinealram.data.sql.Mysql;
 import com.example.maiajam.medcinealram.ui.AddMedcine;
 
 import java.util.List;
 
+import static com.example.maiajam.medcinealram.helper.HelperMethodes.cancelAlarm;
+
 /**
  * Created by maiAjam on 9/5/2017.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
+public class MedicneAdapter extends RecyclerView.Adapter<MedicneAdapter.Holder> {
 
 
 
@@ -32,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
     Mysql db ;
 
 
-  public MyAdapter(List<Medcine> listmedc,Context con)
+  public MedicneAdapter(List<Medcine> listmedc, Context con)
     {
             this.ListMed = listmedc ;
             this.context = con ;
@@ -79,6 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
                                 ListMed.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
                                 Toast.makeText(context, context.getString(R.string.Toast_delete), Toast.LENGTH_LONG).show();
+                                cancelAlarm(context,medid);
                                 break;
 
                             case R.id.action_edit:

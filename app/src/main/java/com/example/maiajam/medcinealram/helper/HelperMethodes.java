@@ -1,9 +1,11 @@
 package com.example.maiajam.medcinealram.helper;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,8 +22,15 @@ import androidx.core.app.NotificationManagerCompat;
 import android.util.DisplayMetrics;
 
 import com.example.maiajam.medcinealram.R;
+import com.example.maiajam.medcinealram.data.model.Medcine;
+import com.example.maiajam.medcinealram.data.sql.Mysql;
+import com.example.maiajam.medcinealram.util.reciver.AlarmReciver;
 
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
+import static android.app.AlarmManager.RTC_WAKEUP;
 
 public class HelperMethodes {
 
@@ -34,6 +43,9 @@ public class HelperMethodes {
     private static SharedPreferences lightModeSP;
     private static String LIGHT_MODE = "lightMode";
     private static String SELECTED_lANG = "selectedLanguage";
+    private static Intent intent;
+    private static AlarmManager alarmManager;
+    private static PendingIntent operation;
     String selectedLang;
 
     public static void setSelectedLanguage(Context context, String lang) {
@@ -63,52 +75,6 @@ public class HelperMethodes {
 
     }
 
-    public static void notifyMyAboutTheMedcine(Context context, String med_name, String med_note, String med_Dose) {
-
-        String chanelId = "10";
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence namE = context.getString(R.string.channel_name);
-            String description = context.getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(chanelId, namE, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-        NotificationCompat.Builder builder;
-
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        long[] vibratePattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
-        builder = new NotificationCompat.Builder(context, "v")
-                .setSmallIcon(R.mipmap.logo)
-                .setContentTitle(med_name)
-                .setContentText(med_note + med_Dose)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setCategory(NotificationCompat.CATEGORY_EVENT)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setChannelId(chanelId)
-                .setOnlyAlertOnce(true)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(med_note))
-                .setAutoCancel(true)
-        ;
-
-        if (getSoundMode(context))
-            builder.setSound(alarmSound);
-        if (getVibrateMode(context))
-            builder.setVibrate(vibratePattern);
-        if (getLightMode(context))
-            builder.setLights(Color.BLUE, 500, 500);
-
-        Notification notification = builder.build();
-        notification.defaults = Notification.DEFAULT_ALL;
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify((int) System.currentTimeMillis(), notification);
-
-    }
 
 
     public static void setLayoutDirction(Context context, String locale) {
@@ -191,5 +157,41 @@ public class HelperMethodes {
         editor.putBoolean(LIGHT_MODE, value);
         editor.apply();
         editor.commit();
+    }
+
+    public static void cancelAlarm(Context context, int medid) {
+    intent = new Intent(context, AlarmReciver.class);
+     alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+       operation = PendingIntent.getBroadcast(context,medid,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.cancel(operation);
+    }
+
+    public static void refireTheAlarm(Context context,int medId,int repeatingTime) {
+        intent = new Intent(context, AlarmReciver.class);
+        alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        operation = PendingIntent.getBroadcast(context,medId,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+
+        switch (repeatingTime) {
+            case 1:// No repeating
+                alarmManager.setRepeating(RTC_WAKEUP, System.currentTimeMillis(),AlarmManager.INTERVAL_DAY, operation);
+                break;
+            case 2:// repeat twice
+                alarmManager.setRepeating(RTC_WAKEUP,System.currentTimeMillis(),12 * 60 * 60 * 1000, operation);
+                break;
+            case 3://repeat 3 times
+                alarmManager.setRepeating(RTC_WAKEUP,System.currentTimeMillis(),8 * 60 * 60 * 1000,operation);
+                break;
+        }
+
+
+    }
+
+    public static void getAllMedicneFromDbAndRefireAlarms(Context context) {
+        Mysql db = new Mysql(context);
+        List<Medcine> medcineList = db.allMedcine();
+
+        for(Medcine medcine:medcineList){
+            refireTheAlarm(context,medcine.getMedcineId(),medcine.getNoTime());
+        }
     }
 }

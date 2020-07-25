@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import static com.example.maiajam.medcinealram.helper.HelperMethodes.notifyMyAboutTheMedcine;
+
 
 public class NotifyMeWorker extends Worker {
 
@@ -24,10 +24,7 @@ public class NotifyMeWorker extends Worker {
     public Result doWork() {
 
         getMedcineInfo();
-        notifyMyAboutTheMedcine(mContext,
-                medicineInfo.getString("med_mame")
-                , medicineInfo.getString("med_not"),
-                medicineInfo.getString("med_dose"));
+
         return Result.retry();
     }
 
