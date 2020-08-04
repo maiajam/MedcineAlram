@@ -164,9 +164,9 @@
     <string name="action_delete">delete</string>
     <string name="action_edit">edit</string>
     <string name="doneUpdate">your Medicine Updated succesfully</string>
-    <string name="oneTime">once a day</string>
-    <string name="twice">twice a day</string>
-    <string name="three">three times a days</string>
+    <string name="oneTime">Once a day</string>
+    <string name="twice">Twice a day</string>
+    <string name="three">3 times a day</string>
     <string name="Toast_delete">The Medicine has been deleted successfully</string>
     <string name="label_medcineInfo">Medicine Info</string>
     <string name="label_medcineDose">Dose</string>

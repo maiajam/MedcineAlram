@@ -64,7 +64,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
     Spinner Sp_DayTime;
     int NoTime = 1, Dose;
     EditText FirstAlarma;
-    TextView startDate;
+    EditText startDate;
     EditText SecondAlarm;
     EditText ThirdAlarm;
     EditText MedMember;
@@ -219,30 +219,28 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             }
         });
 
-      /*  startDate.setOnTouchListener(new View.OnTouchListener() {
+       startDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                new DatePickerDialog(getParent(), startFrom, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                new DatePickerDialog(AddMedcine.this, startFrom, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
                 return true;
             }
-        });*/
-        startDate.setOnClickListener(new View.OnClickListener() {
+        });
+     /*  startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-         //
+                new DatePickerDialog(AddMedcine.this, startFrom, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
+*/
 
         Imdrop = (ImageButton) findViewById(R.id.dropDown);
-
 
         Imdrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (clicked) {
-
                     clicked = false;
                     Imdrop.setImageResource(R.drawable.ic_dropdown);
                     days.setVisibility(View.GONE);
@@ -270,7 +268,6 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
                 if (item.equals(getString(R.string.oneTime))) {
                     NoTime = 1;
                     alarmsVisibility(Once_Aday);
-
                 } else if (item.equals(getString(R.string.twice))) {
                     NoTime = 2;
                     alarmsVisibility(Twice_Aday);
@@ -374,7 +371,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         ch_specificDay = (RadioButton) findViewById(R.id.ch_daysWeek);
         days = (RadioGroup) findViewById(R.id.Days);
 
-        startDate = (TextView) findViewById(R.id.startPiker_Time);
+        startDate = (EditText) findViewById(R.id.startPiker_Time);
 
         Med_SDose = (EditText) findViewById(R.id.ed_SecondDose);
         Med_FDose = (EditText) findViewById(R.id.ed_Dose);
@@ -559,8 +556,8 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
             cEverDay.set(Calendar.YEAR, c_startDate.get(Calendar.YEAR));
             cEverDay.set(Calendar.MONTH, c_startDate.get(Calendar.MONTH));
             cEverDay.set(Calendar.DAY_OF_MONTH, c_startDate.get(Calendar.DAY_OF_MONTH));
-            cEverDay.set(Calendar.HOUR, c_startDate.get(Calendar.HOUR));
-            cEverDay.set(Calendar.MINUTE, c_startDate.get(Calendar.MINUTE));
+            cEverDay.set(Calendar.HOUR, c_firstAlarm.get(Calendar.HOUR));
+            cEverDay.set(Calendar.MINUTE, c_firstAlarm.get(Calendar.MINUTE));
 
             setRepeatedAlarm(cEverDay, noTime);
         } else if (sunCheck) {
