@@ -58,7 +58,7 @@ public class FragmentPrefrence extends PreferenceFragment {
                     if (value.equalsIgnoreCase("العربية")) {
                         setSelectedLanguage(getContext(), arabic);
                         setAppLanguage(getContext(), arabic);
-                        setLayoutDirction(getContext(),arabic);
+                        setLayoutDirction(getContext(), arabic);
                         Intent i = new Intent(getActivity(), prefrenceSetting.class);
                         startActivity(i);
 
@@ -66,7 +66,7 @@ public class FragmentPrefrence extends PreferenceFragment {
                         if (value.equalsIgnoreCase("English")) {
                             setSelectedLanguage(getContext(), English);
                             setAppLanguage(getContext(), English);
-                            setLayoutDirction(getContext(),English);
+                            setLayoutDirction(getContext(), English);
                             Intent i = new Intent(getActivity(), prefrenceSetting.class);
                             startActivity(i);
 
@@ -85,17 +85,7 @@ public class FragmentPrefrence extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                 if (newValue instanceof Boolean) {
-                    Boolean value = (Boolean) newValue;
-
-                    if (value) {
-                        AudioManager audioManager = (AudioManager) getActivity().getSystemService(getActivity().AUDIO_SERVICE);
-                        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                            setVibrateMode(value,getActivity());
-                    } else {
-                        AudioManager audioManager = (AudioManager) getActivity().getSystemService(getActivity().AUDIO_SERVICE);
-                        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                        setVibrateMode(value,getActivity());
-                    }
+                    setVibrateMode((Boolean) newValue, getActivity());
                 }
                 return true;
             }
@@ -108,7 +98,7 @@ public class FragmentPrefrence extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                 if (newValue instanceof Boolean) {
-                   setLightMode(getActivity(), (Boolean) newValue);
+                    setLightMode(getActivity(), (Boolean) newValue);
                 }
 
                 return true;
@@ -122,7 +112,7 @@ public class FragmentPrefrence extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                 if (newValue instanceof Boolean) {
-                    HelperMethodes.setSoundMode((Boolean) newValue,getActivity());
+                    HelperMethodes.setSoundMode((Boolean) newValue, getActivity());
                 }
 
                 return true;

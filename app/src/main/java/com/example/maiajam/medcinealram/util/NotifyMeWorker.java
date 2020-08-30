@@ -24,7 +24,6 @@ public class NotifyMeWorker extends Worker {
     public Result doWork() {
 
         getMedcineInfo();
-
         return Result.retry();
     }
 

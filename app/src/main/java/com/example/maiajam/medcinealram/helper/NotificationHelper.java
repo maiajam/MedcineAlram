@@ -93,7 +93,6 @@ public class NotificationHelper  {
             builder.setLights(Color.BLUE, 500, 500);
 
         Notification notification = builder.build();
-        notification.defaults = Notification.DEFAULT_ALL;
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify((int) System.currentTimeMillis(), notification);
 
