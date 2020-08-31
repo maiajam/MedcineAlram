@@ -18,6 +18,8 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.maiajam.medcinealram.R;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.example.maiajam.medcinealram.helper.Global.alarmSound;
+import static com.example.maiajam.medcinealram.helper.Global.vibratePattern;
 import static com.example.maiajam.medcinealram.helper.HelperMethodes.getLightMode;
 import static com.example.maiajam.medcinealram.helper.HelperMethodes.getSoundMode;
 import static com.example.maiajam.medcinealram.helper.HelperMethodes.getVibrateMode;
@@ -56,22 +58,24 @@ public class NotificationHelper  {
 
         String chanelId = "10";
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence namE = context.getString(R.string.channel_name);
             String description = context.getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
             NotificationChannel channel = new NotificationChannel(chanelId, namE, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+            channel.setSound(getSoundMode(context)?alarmSound:null,null);
+            channel.enableVibration(getVibrateMode(context)?true:false);
+            channel.enableLights(getLightMode(context)?true:false);
+
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder builder;
 
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        long[] vibratePattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
         builder = new NotificationCompat.Builder(context, "v")
                 .setSmallIcon(R.mipmap.logo)
                 .setContentTitle(med_name)
