@@ -503,6 +503,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         Med_Note = MedNote.getText().toString();
         First_Alarm = FirstAlarma.getText().toString();
         start_Date = startDate.getText().toString();
+        Med_Dose = Med_FDose.getText().toString();
 
 
         if (TextUtils.isEmpty(Med_Note)) {
@@ -529,7 +530,6 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startAlarm(int noTime, String med_note, String med_name, int med_dose, Date first_alarm, Date start_date) {
-
 
         Calendar c_startDate = Calendar.getInstance();
         Calendar c_firstAlarm = Calendar.getInstance();
@@ -655,7 +655,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
         initializeAlarm();
         switch (noTime) {
             case 1:// No repeating at the same day
-                medicineAlarm.setRepeating(RTC_WAKEUP, IntilaDelay, AlarmManager.INTERVAL_DAY, pendingIntent);
+                medicineAlarm.setInexactRepeating(RTC_WAKEUP, IntilaDelay, AlarmManager.INTERVAL_DAY, pendingIntent);
                 break;
             case 2:// repeat twice
                 medicineAlarm.setRepeating(RTC_WAKEUP, IntilaDelay, 12 * 60 * 60 * 1000, pendingIntent);
@@ -699,7 +699,7 @@ public class AddMedcine extends AppCompatActivity implements TimeDoseDialge.Alar
     private void initializeAlarm() {
         medicineAlarm = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
         intentReciver = new Intent(this, AlarmReciver.class);
-        intentReciver.putExtra("med_name", Med_name).putExtra("med_note", Med_Note).putExtra("med_dose", Med_Dose);
+        intentReciver.putExtra("med_name", Med_name).putExtra("med_note", Med_Note).putExtra("med_dose", Med_Dose).putExtra("repeatedTime",);
         pendingIntent = PendingIntent.getBroadcast(getBaseContext(), med_Id, intentReciver, PendingIntent.FLAG_UPDATE_CURRENT);
 
     }

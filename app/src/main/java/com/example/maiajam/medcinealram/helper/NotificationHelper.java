@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -60,13 +61,11 @@ public class NotificationHelper  {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence namE = context.getString(R.string.channel_name);
-            String description = context.getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-            NotificationChannel channel = new NotificationChannel(chanelId, namE, importance);
-            channel.setDescription(description);
-            channel.setSound(getSoundMode(context)?alarmSound:null,null);
+            int importance = getSoundMode(context)?NotificationManager.IMPORTANCE_DEFAULT:NotificationManager.IMPORTANCE_LOW;
+
+            NotificationChannel channel = new NotificationChannel(chanelId, context.getString(R.string.channel_name), importance);
+            channel.setDescription(context.getString(R.string.channel_description));
             channel.enableVibration(getVibrateMode(context)?true:false);
             channel.enableLights(getLightMode(context)?true:false);
 
@@ -74,7 +73,6 @@ public class NotificationHelper  {
             notificationManager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder builder;
-
 
         builder = new NotificationCompat.Builder(context, "v")
                 .setSmallIcon(R.mipmap.logo)

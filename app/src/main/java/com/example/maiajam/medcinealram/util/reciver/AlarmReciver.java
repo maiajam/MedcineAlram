@@ -14,7 +14,12 @@ public class AlarmReciver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        resetTheNextRepetedAlarm();
         getMedInfoAndNotifyUser(context, intent);
+    }
+
+    private void resetTheNextRepetedAlarm() {
+
     }
 
     private void getMedInfoAndNotifyUser(Context context, Intent intent) {
